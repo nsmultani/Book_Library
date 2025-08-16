@@ -30,6 +30,12 @@ gem "solid_cache"
 gem "solid_queue"
 gem "solid_cable"
 
+gem 'faker'           # For generating fake data
+gem 'httparty'        # For API requests
+gem 'kaminari'        # For pagination (Feature 3.5)
+gem 'bootstrap', '~> 5.3'  # For styling (Feature 5.3)
+gem 'jquery-rails'    # For Bootstrap JS
+
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
@@ -51,6 +57,10 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+end
+
+group :development, :test do
+  gem 'pry-rails'     # Better debugging
 end
 
 group :development do
