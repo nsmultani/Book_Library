@@ -32,6 +32,7 @@ gem "solid_cable"
 
 gem 'faker'           # For generating fake data
 gem 'httparty'        # For API requests
+gem 'sassc-rails'     # Required for Bootstrap
 gem 'kaminari'        # For pagination (Feature 3.5)
 gem 'bootstrap', '~> 5.3'  # For styling (Feature 5.3)
 gem 'jquery-rails'    # For Bootstrap JS

@@ -1,0 +1,27 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  isbn_10: MyString
+  isbn_13: MyString
+  description: MyText
+  number_of_pages: 1
+  publish_date: MyString
+  cover_small_url: MyString
+  cover_medium_url: MyString
+  cover_large_url: MyString
+  language: MyString
+  publisher: one
+
+two:
+  title: MyString
+  isbn_10: MyString
+  isbn_13: MyString
+  description: MyText
+  number_of_pages: 1
+  publish_date: MyString
+  cover_small_url: MyString
+  cover_medium_url: MyString
+  cover_large_url: MyString
+  language: MyString
+  publisher: two
