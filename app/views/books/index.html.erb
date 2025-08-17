@@ -3,6 +3,11 @@
   <span class="badge bg-primary fs-6"><%= @total_books %> Total Books</span>
 </div>
 
+<!-- Pagination at top -->
+<div class="d-flex justify-content-center mb-4">
+  <%= paginate @books %>
+</div>
+
 <% if @books.any? %>
   <div class="row">
     <% @books.each do |book| %>
@@ -40,6 +45,19 @@
         </div>
       </div>
     <% end %>
+  </div>
+
+  <!-- Pagination at bottom -->
+  <div class="d-flex justify-content-center mt-4">
+    <%= paginate @books %>
+  </div>
+
+  <!-- Page info -->
+  <div class="text-center mt-2">
+    <small class="text-muted">
+      Showing <%= @books.offset_value + 1 %>-<%= [@books.offset_value + @books.limit_value, @total_books].min %> 
+      of <%= @total_books %> books
+    </small>
   </div>
 <% else %>
   <div class="alert alert-info">

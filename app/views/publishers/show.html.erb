@@ -22,13 +22,6 @@
           <p class="card-text">
             <small class="text-muted">Published: <%= book.publish_date %></small>
           </p>
-          <p class="card-text">
-            <% book.subjects.first(2).each do |subject| %>
-              <span class="badge bg-secondary">
-                <%= link_to subject.name, subject_path(subject), class: "text-white text-decoration-none" %>
-              </span>
-            <% end %>
-          </p>
         </div>
       </div>
     </div>

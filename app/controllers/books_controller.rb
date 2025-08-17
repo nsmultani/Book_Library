@@ -1,6 +1,9 @@
 class BooksController < ApplicationController
   def index
-    @books = Book.includes(:authors, :publisher, :subjects).page(params[:page])
+    @books = Book.includes(:authors, :publisher, :subjects)
+                 .order(:title)
+                 .page(params[:page])
+                 .per(12)  
     @total_books = Book.count
   end
 
@@ -11,8 +14,12 @@ class BooksController < ApplicationController
 
   def search
     if params[:query].present?
-      @books = Book.where("title LIKE ?", "%#{params[:query]}%").includes(:authors, :publisher)
-      @total_books = @books.count
+      @books = Book.where("title LIKE ?", "%#{params[:query]}%")
+                   .includes(:authors, :publisher)
+                   .order(:title)
+                   .page(params[:page])
+                   .per(12)
+      @total_books = Book.where("title LIKE ?", "%#{params[:query]}%").count
     else
       redirect_to books_path
     end

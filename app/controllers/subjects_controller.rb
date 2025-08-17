@@ -1,6 +1,9 @@
 class SubjectsController < ApplicationController
   def index
-    @subjects = Subject.includes(:books).order(:name)
+    @subjects = Subject.includes(:books)
+                       .order(:name)
+                       .page(params[:page])
+                       .per(15)
     @total_subjects = Subject.count
   end
 

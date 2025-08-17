@@ -1,6 +1,9 @@
 class PublishersController < ApplicationController
   def index
-    @publishers = Publisher.includes(:books).order(:name)
+    @publishers = Publisher.includes(:books)
+                           .order(:name)
+                           .page(params[:page])
+                           .per(15)
     @total_publishers = Publisher.count
   end
 

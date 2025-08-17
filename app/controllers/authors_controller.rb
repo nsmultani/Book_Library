@@ -1,6 +1,9 @@
 class AuthorsController < ApplicationController
   def index
-    @authors = Author.includes(:books).order(:name)
+    @authors = Author.includes(:books)
+                     .order(:name)
+                     .page(params[:page])
+                     .per(15)
     @total_authors = Author.count
   end
 
