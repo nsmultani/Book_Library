@@ -3,6 +3,58 @@
   <span class="badge bg-primary fs-6"><%= @total_books %> Total Books</span>
 </div>
 
+<div class="card mb-4">
+  <div class="card-header">
+    <h5 class="mb-0">
+      <button class="btn btn-link text-decoration-none" type="button" data-bs-toggle="collapse" data-bs-target="#advancedSearch">
+        Advanced Search & Filters
+      </button>
+    </h5>
+  </div>
+  <div id="advancedSearch" class="collapse <%= 'show' if @search_performed %>">
+    <div class="card-body">
+      <%= form_with url: search_books_path, method: :get, local: true, class: "row g-3" do |f| %>
+        <div class="col-md-6">
+          <%= f.label :query, "Search Books & Authors", class: "form-label" %>
+          <%= f.text_field :query, placeholder: "Enter book title or author name...", 
+                          class: "form-control", value: params[:query] %>
+          <div class="form-text">Search through book titles and author names</div>
+        </div>
+        
+        <div class="col-md-4">
+          <%= f.label :subject_id, "Filter by Subject", class: "form-label" %>
+          <%= f.select :subject_id, 
+                      options_from_collection_for_select(@subjects, :id, :name, params[:subject_id]),
+                      { prompt: "All Subjects" },
+                      { class: "form-select" } %>
+          <div class="form-text">Narrow results by book category</div>
+        </div>
+        
+        <div class="col-md-2 d-flex align-items-end">
+          <%= f.submit "Search", class: "btn btn-primary me-2" %>
+          <%= link_to "Clear", books_path, class: "btn btn-outline-secondary" %>
+        </div>
+      <% end %>
+      
+      <% if @search_performed %>
+        <div class="mt-3 pt-3 border-top">
+          <h6>Search Results:</h6>
+          <p class="mb-0">
+            <% if params[:query].present? %>
+              Text search: "<strong><%= params[:query] %></strong>"
+            <% end %>
+            <% if @selected_subject %>
+              <%= " • " if params[:query].present? %>
+              Subject: <strong><%= @selected_subject.name %></strong>
+            <% end %>
+            • Found <strong><%= @total_books %></strong> books
+          </p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
 <div class="d-flex justify-content-center mb-4">
   <%= paginate @books %>
 </div>
@@ -16,11 +68,18 @@
             <img src="<%= book.cover_medium_url %>" class="card-img-top" style="height: 200px; object-fit: cover;" alt="<%= book.title %>">
           <% end %>
           <div class="card-body d-flex flex-column">
-            <h5 class="card-title"><%= book.title %></h5>
+            <h5 class="card-title">
+              <%= highlight(book.title, params[:query]) if params[:query].present? %>
+              <%= book.title unless params[:query].present? %>
+            </h5>
             <p class="card-text">
               <strong>Authors:</strong> 
               <% book.authors.each do |author| %>
-                <%= link_to author.name, author_path(author), class: "text-decoration-none" %>
+                <% if params[:query].present? %>
+                  <%= link_to highlight(author.name, params[:query]), author_path(author), class: "text-decoration-none" %>
+                <% else %>
+                  <%= link_to author.name, author_path(author), class: "text-decoration-none" %>
+                <% end %>
                 <%= ", " unless author == book.authors.last %>
               <% end %>
             </p>
@@ -31,7 +90,7 @@
             <p class="card-text">
               <strong>Subjects:</strong>
               <% book.subjects.first(3).each do |subject| %>
-                <span class="badge bg-secondary me-1">
+                <span class="badge bg-<%= subject == @selected_subject ? 'warning' : 'secondary' %> me-1">
                   <%= link_to subject.name, subject_path(subject), class: "text-white text-decoration-none" %>
                 </span>
               <% end %>
@@ -49,16 +108,14 @@
   <div class="d-flex justify-content-center mt-4">
     <%= paginate @books %>
   </div>
-
-  <div class="text-center mt-2">
-    <small class="text-muted">
-      Showing <%= @books.offset_value + 1 %>-<%= [@books.offset_value + @books.limit_value, @total_books].min %> 
-      of <%= @total_books %> books
-    </small>
-  </div>
 <% else %>
   <div class="alert alert-info">
     <h4>No books found</h4>
-    <p>Try adjusting your search or browse our collections.</p>
+    <% if @search_performed %>
+      <p>No books match your search criteria. Try adjusting your search terms or filters.</p>
+      <%= link_to "View All Books", books_path, class: "btn btn-primary" %>
+    <% else %>
+      <p>Use the search form above to find books by title, author, or subject category.</p>
+    <% end %>
   </div>
 <% end %>
