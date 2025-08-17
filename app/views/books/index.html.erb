@@ -1,0 +1,23 @@
+<h1>Books</h1>
+
+<% if @books.any? %>
+  <div class="row">
+    <% @books.each do |book| %>
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"><%= book.title %></h5>
+            <p class="card-text">
+              <strong>Authors:</strong> <%= book.authors.pluck(:name).join(", ") %><br>
+              <strong>Publisher:</strong> <%= book.publisher&.name %><br>
+              <strong>Year:</strong> <%= book.publish_date %>
+            </p>
+            <%= link_to "View Details", book_path(book), class: "btn btn-primary" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <p>No books found.</p>
+<% end %>

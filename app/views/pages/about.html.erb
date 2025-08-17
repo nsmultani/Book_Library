@@ -1,0 +1,110 @@
+<div class="row">
+  <div class="col-lg-8">
+    <h1>About Book Library</h1>
+    
+    <h3>Project Overview</h3>
+    <p>
+      This Book Library application demonstrates a comprehensive Rails application built with multiple data sources 
+      and modern web development practices. The project showcases data integration, association management, 
+      and user-friendly navigation.
+    </p>
+
+    <h3>Data Sources</h3>
+    <div class="row">
+      <div class="col-md-4">
+        <h5>1. CSV Data</h5>
+        <p>Book categories and subjects loaded from structured CSV data with difficulty levels and descriptions.</p>
+      </div>
+      <div class="col-md-4">
+        <h5>2. Open Library API</h5>
+        <p>Real book data including titles, authors, publishers, publication information, and cover images from the Open Library API.</p>
+      </div>
+      <div class="col-md-4">
+        <h5>3. Faker Generated Data</h5>
+        <p>Realistic user profiles and book reviews generated using the Faker gem for testing and demonstration purposes.</p>
+      </div>
+    </div>
+
+    <h3>Database Schema</h3>
+    <p>
+      The application uses a well-structured relational database with proper associations:
+    </p>
+    <ul>
+      <li><strong>Books</strong> - Central entity with publication details and cover images</li>
+      <li><strong>Authors</strong> - Writer information with biographical data</li>
+      <li><strong>Publishers</strong> - Publishing house information</li>
+      <li><strong>Subjects</strong> - Book categories with difficulty ratings</li>
+      <li><strong>Users</strong> - Reader profiles with preferences</li>
+      <li><strong>Reviews</strong> - User feedback and ratings</li>
+    </ul>
+
+    <h3>Relationships</h3>
+    <ul>
+      <li>Books belong to Publishers (one-to-many)</li>
+      <li>Books have many Authors through join table (many-to-many)</li>
+      <li>Books have many Subjects through join table (many-to-many)</li>
+      <li>Users write many Reviews (one-to-many)</li>
+      <li>Books receive many Reviews (one-to-many)</li>
+    </ul>
+
+    <h3>Technical Features</h3>
+    <ul>
+      <li>RESTful routing and controllers</li>
+      <li>Bootstrap responsive design</li>
+      <li>Search functionality</li>
+      <li>Data validation and error handling</li>
+      <li>Comprehensive seed data from multiple sources</li>
+    </ul>
+  </div>
+  
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-header">
+        <h5>Database Statistics</h5>
+      </div>
+      <div class="card-body">
+        <div class="row text-center">
+          <div class="col-6 mb-3">
+            <h3 class="text-primary"><%= @total_books %></h3>
+            <small>Books</small>
+          </div>
+          <div class="col-6 mb-3">
+            <h3 class="text-success"><%= @total_authors %></h3>
+            <small>Authors</small>
+          </div>
+          <div class="col-6 mb-3">
+            <h3 class="text-info"><%= @total_publishers %></h3>
+            <small>Publishers</small>
+          </div>
+          <div class="col-6 mb-3">
+            <h3 class="text-warning"><%= @total_subjects %></h3>
+            <small>Subjects</small>
+          </div>
+          <div class="col-6 mb-3">
+            <h3 class="text-danger"><%= @total_reviews %></h3>
+            <small>Reviews</small>
+          </div>
+          <div class="col-6 mb-3">
+            <h3 class="text-secondary"><%= @total_users %></h3>
+            <small>Users</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mt-4">
+      <div class="card-header">
+        <h5>Navigation</h5>
+      </div>
+      <div class="card-body">
+        <p>Use the navigation menu above to explore:</p>
+        <ul class="list-unstyled">
+          <li><%= link_to "📚 Browse Books", books_path, class: "text-decoration-none" %></li>
+          <li><%= link_to "✍️ View Authors", authors_path, class: "text-decoration-none" %></li>
+          <li><%= link_to "🏢 Publishers", publishers_path, class: "text-decoration-none" %></li>
+          <li><%= link_to "📂 Subjects", subjects_path, class: "text-decoration-none" %></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
