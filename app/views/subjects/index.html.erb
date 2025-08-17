@@ -1,2 +1,26 @@
-<h1>Subjects#index</h1>
-<p>Find me in app/views/subjects/index.html.erb</p>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Subject Categories</h1>
+  <span class="badge bg-warning fs-6"><%= @total_subjects %> Categories</span>
+</div>
+
+<div class="row">
+  <% @subjects.each do |subject| %>
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title"><%= subject.name %></h5>
+          <p class="card-text"><%= subject.description %></p>
+          <p class="card-text">
+            <span class="badge bg-<%= subject.difficulty_level == 'Beginner' ? 'success' : subject.difficulty_level == 'Intermediate' ? 'warning' : 'danger' %>">
+              <%= subject.difficulty_level %>
+            </span>
+          </p>
+          <p class="card-text">
+            <strong>Books:</strong> <%= subject.books.count %>
+          </p>
+          <%= link_to "Browse Books", subject_path(subject), class: "btn btn-warning" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

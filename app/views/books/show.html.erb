@@ -1,2 +1,83 @@
-<h1>Books#show</h1>
-<p>Find me in app/views/books/show.html.erb</p>
+<div class="row">
+  <div class="col-md-4">
+    <% if @book.cover_large_url %>
+      <img src="<%= @book.cover_large_url %>" class="img-fluid rounded" alt="<%= @book.title %>">
+    <% else %>
+      <div class="bg-light p-5 text-center rounded">
+        <h3>No Cover Available</h3>
+      </div>
+    <% end %>
+  </div>
+  
+  <div class="col-md-8">
+    <h1><%= @book.title %></h1>
+    
+    <div class="mb-3">
+      <h5>Authors:</h5>
+      <% @book.authors.each do |author| %>
+        <%= link_to author.name, author_path(author), class: "btn btn-outline-primary me-2 mb-2" %>
+      <% end %>
+    </div>
+    
+    <div class="mb-3">
+      <h5>Publisher:</h5>
+      <% if @book.publisher %>
+        <%= link_to @book.publisher.name, publisher_path(@book.publisher), class: "btn btn-outline-info" %>
+      <% end %>
+    </div>
+    
+    <div class="mb-3">
+      <h5>Subjects:</h5>
+      <% @book.subjects.each do |subject| %>
+        <%= link_to subject.name, subject_path(subject), class: "badge bg-secondary me-1 text-decoration-none" %>
+      <% end %>
+    </div>
+    
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <p><strong>Published:</strong> <%= @book.publish_date %></p>
+        <p><strong>Pages:</strong> <%= @book.number_of_pages %></p>
+        <p><strong>Language:</strong> <%= @book.language %></p>
+      </div>
+      <div class="col-md-6">
+        <% if @book.isbn_10 %>
+          <p><strong>ISBN-10:</strong> <%= @book.isbn_10 %></p>
+        <% end %>
+        <% if @book.isbn_13 %>
+          <p><strong>ISBN-13:</strong> <%= @book.isbn_13 %></p>
+        <% end %>
+        <% if @average_rating %>
+          <p><strong>Average Rating:</strong> <%= @average_rating %>/5</p>
+        <% end %>
+      </div>
+    </div>
+    
+    <% if @book.description %>
+      <div class="mb-3">
+        <h5>Description:</h5>
+        <p><%= @book.description %></p>
+      </div>
+    <% end %>
+    
+    <% if @book.reviews.any? %>
+      <div class="mb-3">
+        <h5>Reviews (<%= @book.reviews.count %>):</h5>
+        <% @book.reviews.first(3).each do |review| %>
+          <div class="card mb-2">
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <strong><%= review.user.name %></strong>
+                <span class="badge bg-warning"><%= review.rating %>/5</span>
+              </div>
+              <p class="mt-2"><%= review.content %></p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="mt-4">
+  <%= link_to "← Back to Books", books_path, class: "btn btn-secondary" %>
+</div>

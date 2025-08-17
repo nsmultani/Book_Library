@@ -1,2 +1,40 @@
-<h1>Publishers#show</h1>
-<p>Find me in app/views/publishers/show.html.erb</p>
+<h1><%= @publisher.name %></h1>
+
+<% if @publisher.founded_year %>
+  <p class="lead">Founded: <%= @publisher.founded_year %></p>
+<% end %>
+
+<h5>Books Published (<%= @books_count %>):</h5>
+
+<div class="row">
+  <% @publisher.books.each do |book| %>
+    <div class="col-md-6 col-lg-4 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title"><%= link_to book.title, book_path(book) %></h6>
+          <p class="card-text">
+            <strong>Authors:</strong>
+            <% book.authors.each do |author| %>
+              <%= link_to author.name, author_path(author), class: "text-decoration-none" %>
+              <%= ", " unless author == book.authors.last %>
+            <% end %>
+          </p>
+          <p class="card-text">
+            <small class="text-muted">Published: <%= book.publish_date %></small>
+          </p>
+          <p class="card-text">
+            <% book.subjects.first(2).each do |subject| %>
+              <span class="badge bg-secondary">
+                <%= link_to subject.name, subject_path(subject), class: "text-white text-decoration-none" %>
+              </span>
+            <% end %>
+          </p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="mt-4">
+  <%= link_to "← Back to Publishers", publishers_path, class: "btn btn-secondary" %>
+</div>

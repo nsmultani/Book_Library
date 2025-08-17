@@ -1,2 +1,39 @@
-<h1>Subjects#show</h1>
-<p>Find me in app/views/subjects/show.html.erb</p>
+<div class="mb-4">
+  <h1><%= @subject.name %></h1>
+  <p class="lead"><%= @subject.description %></p>
+  <span class="badge bg-<%= @subject.difficulty_level == 'Beginner' ? 'success' : @subject.difficulty_level == 'Intermediate' ? 'warning' : 'danger' %> fs-6">
+    <%= @subject.difficulty_level %> Level
+  </span>
+</div>
+
+<h5>Books in this Category (<%= @books_count %>):</h5>
+
+<div class="row">
+  <% @subject.books.each do |book| %>
+    <div class="col-md-6 col-lg-4 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title"><%= link_to book.title, book_path(book) %></h6>
+          <p class="card-text">
+            <strong>Authors:</strong>
+            <% book.authors.each do |author| %>
+              <%= link_to author.name, author_path(author), class: "text-decoration-none" %>
+              <%= ", " unless author == book.authors.last %>
+            <% end %>
+          </p>
+          <p class="card-text">
+            <strong>Publisher:</strong>
+            <%= link_to book.publisher.name, publisher_path(book.publisher), class: "text-decoration-none" if book.publisher %>
+          </p>
+          <p class="card-text">
+            <small class="text-muted">Published: <%= book.publish_date %></small>
+          </p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="mt-4">
+  <%= link_to "← Back to Subjects", subjects_path, class: "btn btn-secondary" %>
+</div>

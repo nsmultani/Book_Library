@@ -1,2 +1,25 @@
-<h1>Authors#index</h1>
-<p>Find me in app/views/authors/index.html.erb</p>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Authors Collection</h1>
+  <span class="badge bg-success fs-6"><%= @total_authors %> Total Authors</span>
+</div>
+
+<div class="row">
+  <% @authors.each do |author| %>
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title"><%= author.name %></h5>
+          <p class="card-text">
+            <strong>Books Written:</strong> <%= author.books.count %>
+          </p>
+          <% if author.birth_date %>
+            <p class="card-text">
+              <small class="text-muted"><%= author.display_years %></small>
+            </p>
+          <% end %>
+          <%= link_to "View Books", author_path(author), class: "btn btn-success" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
