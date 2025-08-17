@@ -1,10 +1,15 @@
 class PublishersController < ApplicationController
   def index
-    @publishers = Publisher.includes(:books)
-                           .order(:name)
-                           .page(params[:page])
-                           .per(15)
-    @total_publishers = Publisher.count
+    @publishers = Publisher.includes(:books).order(:name)
+    
+    if params[:search].present?
+      @publishers = @publishers.where("name LIKE ?", "%#{params[:search]}%")
+      @search_performed = true
+    end
+    
+    @total_publishers = @publishers.count
+    
+    @publishers = @publishers.page(params[:page]).per(15)
   end
 
   def show
