@@ -1,83 +1,180 @@
-<div class="row">
-  <div class="col-md-4">
-    <% if @book.cover_large_url %>
-      <img src="<%= @book.cover_large_url %>" class="img-fluid rounded" alt="<%= @book.title %>">
-    <% else %>
-      <div class="bg-light p-5 text-center rounded">
-        <h3>No Cover Available</h3>
-      </div>
-    <% end %>
-  </div>
-  
-  <div class="col-md-8">
-    <h1><%= @book.title %></h1>
-    
-    <div class="mb-3">
-      <h5>Authors:</h5>
-      <% @book.authors.each do |author| %>
-        <%= link_to author.name, author_path(author), class: "btn btn-outline-primary me-2 mb-2" %>
-      <% end %>
-    </div>
-    
-    <div class="mb-3">
-      <h5>Publisher:</h5>
-      <% if @book.publisher %>
-        <%= link_to @book.publisher.name, publisher_path(@book.publisher), class: "btn btn-outline-info" %>
-      <% end %>
-    </div>
-    
-    <div class="mb-3">
-      <h5>Subjects:</h5>
-      <% @book.subjects.each do |subject| %>
-        <%= link_to subject.name, subject_path(subject), class: "badge bg-secondary me-1 text-decoration-none" %>
-      <% end %>
-    </div>
-    
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <p><strong>Published:</strong> <%= @book.publish_date %></p>
-        <p><strong>Pages:</strong> <%= @book.number_of_pages %></p>
-        <p><strong>Language:</strong> <%= @book.language %></p>
-      </div>
-      <div class="col-md-6">
-        <% if @book.isbn_10 %>
-          <p><strong>ISBN-10:</strong> <%= @book.isbn_10 %></p>
-        <% end %>
-        <% if @book.isbn_13 %>
-          <p><strong>ISBN-13:</strong> <%= @book.isbn_13 %></p>
-        <% end %>
-        <% if @average_rating %>
-          <p><strong>Average Rating:</strong> <%= @average_rating %>/5</p>
-        <% end %>
-      </div>
-    </div>
-    
-    <% if @book.description %>
-      <div class="mb-3">
-        <h5>Description:</h5>
-        <p><%= @book.description %></p>
-      </div>
-    <% end %>
-    
-    <% if @book.reviews.any? %>
-      <div class="mb-3">
-        <h5>Reviews (<%= @book.reviews.count %>):</h5>
-        <% @book.reviews.first(3).each do |review| %>
-          <div class="card mb-2">
-            <div class="card-body">
-              <div class="d-flex justify-content-between">
-                <strong><%= review.user.name %></strong>
-                <span class="badge bg-warning"><%= review.rating %>/5</span>
-              </div>
-              <p class="mt-2"><%= review.content %></p>
+<div class="container-fluid">
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><%= link_to "Home", root_path %></li>
+      <li class="breadcrumb-item"><%= link_to "Books", books_path %></li>
+      <li class="breadcrumb-item active" aria-current="page"><%= truncate(@book.title, length: 30) %></li>
+    </ol>
+  </nav>
+
+  <div class="row">
+    <div class="col-lg-4 col-md-5 mb-4">
+      <div class="sticky-top" style="top: 20px;">
+        <% if @book.cover_large_url.present? %>
+          <img src="<%= @book.cover_large_url %>" class="img-fluid rounded shadow" alt="Cover of <%= @book.title %>">
+        <% else %>
+          <div class="bg-light p-5 text-center rounded shadow" style="min-height: 400px;">
+            <div class="d-flex flex-column justify-content-center h-100">
+              <i class="fas fa-book fa-5x text-muted mb-3"></i>
+              <h3 class="text-muted">No Cover Available</h3>
             </div>
           </div>
         <% end %>
+        
+        <div class="card mt-3">
+          <div class="card-header">
+            <h6 class="mb-0">Quick Stats</h6>
+          </div>
+          <div class="card-body">
+            <div class="row text-center">
+              <% if @book.number_of_pages %>
+                <div class="col-6 mb-2">
+                  <div class="h5 text-primary mb-0"><%= @book.number_of_pages %></div>
+                  <small class="text-muted">Pages</small>
+                </div>
+              <% end %>
+              <% if @average_rating %>
+                <div class="col-6 mb-2">
+                  <div class="h5 text-warning mb-0"><%= @average_rating %>/5</div>
+                  <small class="text-muted">Rating</small>
+                </div>
+              <% end %>
+              <div class="col-6 mb-2">
+                <div class="h5 text-success mb-0"><%= @book.reviews.count %></div>
+                <small class="text-muted">Reviews</small>
+              </div>
+              <div class="col-6 mb-2">
+                <div class="h5 text-info mb-0"><%= @book.language.upcase if @book.language %></div>
+                <small class="text-muted">Language</small>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    <% end %>
+    </div>
+    
+    <div class="col-lg-8 col-md-7">
+      <h1 class="display-5 mb-3"><%= @book.title %></h1>
+      
+      <div class="mb-4">
+        <h5>Authors</h5>
+        <div class="row">
+          <% if @book.authors.any? %>
+            <% @book.authors.each do |author| %>
+              <div class="col-sm-6 col-lg-4 mb-2">
+                <%= link_to author_path(author), class: "btn btn-outline-primary w-100" do %>
+                  <%= author.name %>
+                <% end %>
+              </div>
+            <% end %>
+          <% else %>
+            <div class="col-12">
+              <em class="text-muted">No authors listed</em>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <h6>Publisher</h6>
+          <% if @book.publisher %>
+            <%= link_to @book.publisher.name, publisher_path(@book.publisher), class: "btn btn-outline-info" %>
+          <% else %>
+            <em class="text-muted">Unknown publisher</em>
+          <% end %>
+        </div>
+        <div class="col-md-6">
+          <h6>Publication Details</h6>
+          <ul class="list-unstyled">
+            <li><strong>Year:</strong> <%= @book.publish_date || 'Unknown' %></li>
+            <% if @book.isbn_10 %>
+              <li><strong>ISBN-10:</strong> <%= @book.isbn_10 %></li>
+            <% end %>
+            <% if @book.isbn_13 %>
+              <li><strong>ISBN-13:</strong> <%= @book.isbn_13 %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="mb-4">
+        <h5>Subjects & Categories</h5>
+        <% if @book.subjects.any? %>
+          <div class="row">
+            <% @book.subjects.each do |subject| %>
+              <div class="col-sm-6 col-lg-4 mb-2">
+                <%= link_to subject_path(subject), class: "text-decoration-none" do %>
+                  <span class="badge bg-warning text-dark w-100 p-2">
+                    <%= subject.name %>
+                    <br><small><%= subject.difficulty_level %></small>
+                  </span>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <em class="text-muted">No subjects categorized</em>
+        <% end %>
+      </div>
+      
+      <% if @book.description.present? %>
+        <div class="mb-4">
+          <h5>Description</h5>
+          <div class="card">
+            <div class="card-body">
+              <p class="card-text"><%= simple_format(@book.description) %></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      
+      <% if @book.reviews.any? %>
+        <div class="mb-4">
+          <h5>Reader Reviews (<%= @book.reviews.count %>)</h5>
+          <div class="row">
+            <% @book.reviews.first(6).each do |review| %>
+              <div class="col-lg-6 mb-3">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                      <h6 class="card-title mb-0"><%= review.user.name %></h6>
+                      <span class="badge bg-warning">
+                        <%= "★" * review.rating %><%= "☆" * (5 - review.rating) %>
+                      </span>
+                    </div>
+                    <p class="card-text"><%= truncate(review.content, length: 120) %></p>
+                    <small class="text-muted">
+                      <%= time_ago_in_words(review.created_at) %> ago
+                    </small>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          <% if @book.reviews.count > 6 %>
+            <div class="text-center">
+              <button class="btn btn-outline-secondary">
+                View all <%= @book.reviews.count %> reviews
+              </button>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
   </div>
-</div>
-
-<div class="mt-4">
-  <%= link_to "← Back to Books", books_path, class: "btn btn-secondary" %>
+  
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="d-flex flex-wrap gap-2">
+        <%= link_to "← Back to Books", books_path, class: "btn btn-secondary" %>
+        <% if @book.authors.any? %>
+          <%= link_to "More by #{@book.authors.first.name}", author_path(@book.authors.first), class: "btn btn-outline-primary" %>
+        <% end %>
+        <% if @book.publisher %>
+          <%= link_to "More from #{@book.publisher.name}", publisher_path(@book.publisher), class: "btn btn-outline-info" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>
