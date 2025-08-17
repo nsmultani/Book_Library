@@ -8,7 +8,6 @@
 
 /* Custom Bootstrap overrides and enhancements */
 
-/* Improve pagination styling */
 .pagination {
   display: flex;
   padding-left: 0;
@@ -61,7 +60,6 @@
   pointer-events: none;
 }
 
-/* Enhanced card hover effects */
 .card {
   transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
@@ -71,7 +69,6 @@
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
 
-/* Improved search form styling */
 .collapse.show {
   animation: slideDown 0.3s ease-in-out;
 }
@@ -87,13 +84,11 @@
   }
 }
 
-/* Better badge styling */
 .badge {
   font-size: 0.875em;
   font-weight: 500;
 }
 
-/* Responsive improvements */
 @media (max-width: 768px) {
   .card-img-top {
     height: 150px !important;
@@ -108,7 +103,6 @@
   }
 }
 
-/* Print styles */
 @media print {
   .navbar,
   .pagination,
@@ -123,7 +117,6 @@
   }
 }
 
-/* Accessibility improvements */
 .visually-hidden {
   position: absolute !important;
   width: 1px !important;
@@ -136,14 +129,12 @@
   border: 0 !important;
 }
 
-/* Focus improvements for accessibility */
 .btn:focus,
 .form-control:focus,
 .form-select:focus {
   box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
-/* Loading states */
 .btn.loading {
   pointer-events: none;
   opacity: 0.65;
