@@ -1,58 +1,78 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Book Library</title>
+    <meta charset="utf-8">
+    <title>Book Library - Discover Your Next Great Read</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="A comprehensive book library with books, authors, publishers, and subjects from multiple data sources.">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-   
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUa6J29auGpz6RwHJrvbRUYMBgfO6H6w6QN4vA8tYVm2Wp9pZdlrGjGkEuWx" crossorigin="anonymous">
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   </head>
 
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" role="navigation">
       <div class="container">
         <%= link_to "Book Library", root_path, class: "navbar-brand" %>
         
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
-              <%= link_to "Home", root_path, class: "nav-link" %>
+              <%= link_to "Home", root_path, class: "nav-link", "aria-current": (current_page?(root_path) ? "page" : nil) %>
             </li>
             <li class="nav-item">
-              <%= link_to "Books", books_path, class: "nav-link" %>
+              <%= link_to "Books", books_path, class: "nav-link", "aria-current": (current_page?(books_path) ? "page" : nil) %>
             </li>
             <li class="nav-item">
-              <%= link_to "Authors", authors_path, class: "nav-link" %>
+              <%= link_to "Authors", authors_path, class: "nav-link", "aria-current": (current_page?(authors_path) ? "page" : nil) %>
             </li>
             <li class="nav-item">
-              <%= link_to "Publishers", publishers_path, class: "nav-link" %>
+              <%= link_to "Publishers", publishers_path, class: "nav-link", "aria-current": (current_page?(publishers_path) ? "page" : nil) %>
             </li>
             <li class="nav-item">
-              <%= link_to "Subjects", subjects_path, class: "nav-link" %>
+              <%= link_to "Subjects", subjects_path, class: "nav-link", "aria-current": (current_page?(subjects_path) ? "page" : nil) %>
             </li>
             <li class="nav-item">
-              <%= link_to "About", about_path, class: "nav-link" %>
+              <%= link_to "About", about_path, class: "nav-link", "aria-current": (current_page?(about_path) ? "page" : nil) %>
             </li>
           </ul>
           
-          <%= form_with url: search_books_path, method: :get, class: "d-flex", local: true do |f| %>
-            <%= f.text_field :query, placeholder: "Quick search...", class: "form-control me-2", value: params[:query] %>
+          <!-- Quick Search Form with proper labels -->
+          <%= form_with url: search_books_path, method: :get, class: "d-flex", local: true, role: "search" do |f| %>
+            <%= f.label :query, "Search books", class: "visually-hidden" %>
+            <%= f.text_field :query, placeholder: "Quick search...", class: "form-control me-2", value: params[:query], "aria-label": "Search books" %>
             <%= f.submit "Search", class: "btn btn-outline-light" %>
           <% end %>
         </div>
       </div>
     </nav>
 
-    <main class="container mt-4">
+    <main class="container mt-4" role="main">
       <%= yield %>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <footer class="bg-dark text-light py-4 mt-5" role="contentinfo">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <h5>Book Library</h5>
+            <p class="mb-0">A comprehensive book collection with data from multiple sources.</p>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <p class="mb-0">
+              <small>&copy; <%= Date.current.year %> Book Library. Built with Ruby on Rails.</small>
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
   </body>
 </html>
