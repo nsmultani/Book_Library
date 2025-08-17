@@ -3,12 +3,12 @@ class AuthorsController < ApplicationController
     @authors = Author.includes(:books).order(:name)
     
     if params[:search].present?
-      @authors = @authors.where("name LIKE ?", "%#{params[:search]}%")
+      search_term = params[:search].strip.downcase
+      @authors = @authors.where("LOWER(name) LIKE ?", "%#{search_term}%")
       @search_performed = true
     end
     
     @total_authors = @authors.count
-    
     @authors = @authors.page(params[:page]).per(15)
   end
 

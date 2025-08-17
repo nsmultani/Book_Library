@@ -3,13 +3,13 @@ class SubjectsController < ApplicationController
     @subjects = Subject.includes(:books).order(:name)
     
     if params[:search].present?
-      @subjects = @subjects.where("name LIKE ? OR description LIKE ?", 
-                                 "%#{params[:search]}%", "%#{params[:search]}%")
+      search_term = params[:search].strip.downcase
+      @subjects = @subjects.where("LOWER(name) LIKE ? OR LOWER(description) LIKE ?", 
+                                 "%#{search_term}%", "%#{search_term}%")
       @search_performed = true
     end
     
     @total_subjects = @subjects.count
-    
     @subjects = @subjects.page(params[:page]).per(15)
   end
 

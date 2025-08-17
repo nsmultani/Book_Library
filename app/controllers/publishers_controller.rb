@@ -3,12 +3,12 @@ class PublishersController < ApplicationController
     @publishers = Publisher.includes(:books).order(:name)
     
     if params[:search].present?
-      @publishers = @publishers.where("name LIKE ?", "%#{params[:search]}%")
+      search_term = params[:search].strip.downcase
+      @publishers = @publishers.where("LOWER(name) LIKE ?", "%#{search_term}%")
       @search_performed = true
     end
     
     @total_publishers = @publishers.count
-    
     @publishers = @publishers.page(params[:page]).per(15)
   end
 
